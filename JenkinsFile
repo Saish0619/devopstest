@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_TOKEN = credentials('dockerhub-creds	')   // Add secret in Jenkins with ID = docker_token
+        USERNAME = credentials('dockerhub-creds	')
+    }
+
+    stages {
+        stage('Clone') {
+            steps {
+                git 'https://github.com/Saish0619/devopstest'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("my-node-app:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+        stage('Push Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhudocb-creds', usernameVariable: USERNAME , passwordVariable: DOCKER_TOKEN)]) {
+                    script {
+                        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-creds') {
+                            docker.image("my-node-app:${env.BUILD_NUMBER}").push()
+                        }
+                    }
+                }
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f deployment.yaml'
+                sh 'kubectl apply -f service.yaml'
+            }
+        }
+    }
+}
