@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devopstest-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: devopstest-app
+  template:
+    metadata:
+      labels:
+        app: devopstest-app
+    spec:
+      containers:
+      - name: devopstest-app
+        image: nginx:latest
+        ports:
+        - containerPort: 3000
