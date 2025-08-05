@@ -13,7 +13,7 @@ spec:
         app: my-node-app
     spec:
       containers:
-      - name: my-node-app
-        image: my-node-app:latest
-        ports:
-        - containerPort: 3000
+      - name: devopstest-app
+      image: my-node-app:latest  # or my-node-app:<build_number>
+      imagePullPolicy: Never
+

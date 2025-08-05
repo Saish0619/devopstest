@@ -8,18 +8,21 @@ pipeline {
                 bat 'call docker_env.bat'
             }
         }
+
         stage('Clone') {
             steps {
                 git 'https://github.com/Saish0619/devopstest'
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("my-node-app:${env.BUILD_NUMBER}")
+                    bat "docker build -t my-node-app:latest ."
                 }
             }
         }
+
         stage('Deploy to Kubernetes') {
             steps {
                 bat 'kubectl apply -f deployment.yaml'
