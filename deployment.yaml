@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: devopstest-app
+  name: my-node-app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: devopstest-app
+      app: my-node-app
   template:
     metadata:
       labels:
-        app: devopstest-app
+        app: my-node-app
     spec:
       containers:
-      - name: devopstest-app
+      - name: my-node-app
         image: my-node-app:latest
         ports:
         - containerPort: 3000
